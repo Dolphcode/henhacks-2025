@@ -10,4 +10,15 @@ const fire = new Disaster('fire', 'open space');
 const tornado = new Disaster('tornado', 'basement');
 const flood = new Disaster('flood', 'high ground');
 
-export {earthquake, fire, tornado, flood};
+function SelectRandomDisaster() {
+    var disasters = [earthquake, fire, tornado, flood];
+    return disasters[Math.floor(Math.random() * disasters.length)];
+}
+
+function DisasterPrompt( { disaster } ) {
+    return (
+        <p>{disaster.name} is happening. What do you do?</p>
+    )
+}
+
+export {earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster};
