@@ -4,6 +4,7 @@ import * as DisasterInfo from './Disasters.jsx';
 import { DisasterPrompt } from './Disasters.jsx';
 import { forest, hospital, house, lake, office, park, store, tallBuilding, townHall } from './Locations.jsx';
 
+
 /**
  * ResponsePopUp Component: Displays a pop-up message.
  * @param {boolean} show - Determines if the pop-up should be visible.
@@ -94,6 +95,10 @@ function App() {
 
   return (
     <>
+      <div>
+        <img src="src\assets\The_Survival_Blueprint_-_Logo-removebg-preview.png" alt="The Survival Blueprint Logo" width="10%" height="10%"/>
+      </div>
+
       <DisasterPrompt disaster={currentDisaster} />
       <div className="options">
         <button onClick={() => checkWin(tallBuilding)}>Tall Building</button>
