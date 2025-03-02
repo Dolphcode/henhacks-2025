@@ -27,4 +27,4 @@ function DisasterPrompt( { disaster } ) {
     )
 }
 
-export {earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster, DisasterWants};
+export {earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster, Disaster, DisasterWants};
