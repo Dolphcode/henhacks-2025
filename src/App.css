@@ -40,6 +40,10 @@
   padding: 1em;
   display: flex;
 }
+.options button {
+  margin: 0.5em;
+  width: 10em;
+}
 
 .read-the-docs {
   color: #888;

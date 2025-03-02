@@ -34,13 +34,13 @@ function App() {
   function checkWin(location) {
     if (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.hasBasement()) {
       setStatus(true);
-      setText("You survived!\n A building with a sturdy basement is a good place to be during a " + currentDisaster.name);
+      setText("You survived!\n A building with a sturdy basement is a good place to be during a " + currentDisaster.name + ".");
     } else if (currentDisaster.want === DisasterInfo.DisasterWants.OPEN_SPACE && location.isOpenArea()) {
       setStatus(true);
-      setText("You survived!\n An open area is a good place to be during a " + currentDisaster.name);
+      setText("You survived!\n An open area is a good place to be during a " + currentDisaster.name + ".");
     } else if (currentDisaster.want === DisasterInfo.DisasterWants.HIGH_GROUND && location.isHighGround()) {
       setStatus(true);
-      setText("You survived!\n High ground is a good place to be during a " + currentDisaster.name);
+      setText("You survived!\n High ground is a good place to be during a " + currentDisaster.name + ".");
     } else {
       setStatus(true);
       setText("You died!");
@@ -94,8 +94,12 @@ function App() {
           <ResponsePopUp
             show={status}
             text={text}
-          />
+          />  
         </div>
+      </div>
+      <div>
+        <p><b>Generic Team Name</b></p>
+        <p>SafeHaven | HenHacks 2025</p>
       </div>
     </>
   )
