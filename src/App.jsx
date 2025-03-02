@@ -83,13 +83,15 @@ function App() {
       (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.hasBasement()) ||
       (currentDisaster.want === DisasterInfo.DisasterWants.OPEN_SPACE && location.isOpenArea()) ||
       (currentDisaster.want === DisasterInfo.DisasterWants.HIGH_GROUND && location.isHighGround()) ||
-      (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.isLowGround());
+      (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.isLowGround()) ||
+      (currentDisaster.want === DisasterInfo.DisasterWants.LOW_GROUND && location.isLowGround()) ||
+      (currentDisaster.want === DisasterInfo.DisasterWants.ALONE && location.isSoliditary());
 
     setStatus(true);
     generateAIResponse(
       `They thought that ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()} was a good idea. give one sentence why they were ${
         isWin ? 'correct' : 'wrong'
-      }.`
+      }. If they chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response.`
     );
   }
 
