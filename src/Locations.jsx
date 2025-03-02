@@ -26,7 +26,6 @@ class Location {
       return this.building;  
     }
   }
-  
   const tallBuilding = new Location("tallBuilding",true, false, true, false);
   const hospital = new Location("hospital", true, false, true, false);
   const house = new Location('house with sturdy basement', false, false, true, false);
@@ -36,6 +35,7 @@ class Location {
   const forest = new Location("forest", false, false, false, true);
   const office = new Location("office", true, false, true, false);
   const townHall = new Location("townHall", true, false, true, false);
+
   
   export { hospital, house, park, store, lake, forest, office, townHall, tallBuilding, Location };
   
