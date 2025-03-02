@@ -9,6 +9,9 @@ class Disaster{
         this.name = name;
         this.want = want;
     }
+    getName(){
+        return this.name;
+    }
 }
 
 const earthquake = new Disaster('earthquake', DisasterWants.BASEMENT);
