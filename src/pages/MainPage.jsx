@@ -183,6 +183,17 @@ CheckOffice();
 
       <p>The address identified is: <b>{locationData}</b></p>
       <DisasterPrompt disaster={currentDisaster} />
+      <div className="icons">
+        <img src="https://lh3.googleusercontent.com/d/1UUd9zz0sWhA5Befsgx1UDheedvFt0G2E" alt="Tall Building Icon" width="10%" height="10%" />
+        <img src="https://lh3.googleusercontent.com/d/1LiuY5Q9jD5JvWYRMVgQm2tF1A8-H1ngg" alt="House Icon" width="10%" height="10%" />
+        {hospitalCount > 0 ? (<img src="https://lh3.googleusercontent.com/d/1REItDRmSE4HijH2qzDXhK72zGU1ax7Ic" alt="Hospital Icon" width="10%" height="10%" />) : ("")}
+        {parkCount > 0 ? (<img src="https://lh3.googleusercontent.com/d/173t7rAkjiS8bXsAorg9K9K4NYmPJ4f4U" alt="Park Icon" width="10%" height="10%" />) : ("")}
+        <img src="https://lh3.googleusercontent.com/d/14blfPaoAl9A5DBP-ag45rgqoEkQKRgSf" alt="Store Icon" width="10%" height="10%" />
+        <img src="https://lh3.googleusercontent.com/d/1HeDPkkqQXKyDsAaflKXKRBJ6O-lVRPx0" alt="Lake Icon" width="10%" height="10%" />
+        <img src="https://lh3.googleusercontent.com/d/1Gf6It0nWcrUjpoC5AodnkSW49a0eJdok" alt="Forest Icon" width="10%" height="10%" />
+        {officeCount > 0 ? (<img src="https://lh3.googleusercontent.com/d/10BU5vNet9qkAFkjowCtWCXcneIiOCcB6" alt="Office Icon" width="10%" height="10%" />) : ("")}
+        <img src="https://lh3.googleusercontent.com/d/1tTZwHYiUx76GuLMasUWJH5cP9jghnnOv" alt="Town Hall Icon" width="10%" height="10%" />
+      </div>
       <div className="options">
         <button onClick={() => checkWin(tallBuilding)}>Tall Building</button>
         <button onClick={() => checkWin(house)}>House</button>
