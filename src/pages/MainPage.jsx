@@ -3,9 +3,11 @@ import '../App.css';
 import { GoogleMap } from '@react-google-maps/api'
 import axios from 'axios';
 import { useState } from 'react';
+import { useParams } from 'react-router';
 import * as DisasterInfo from '../Disasters.jsx';
 import { DisasterPrompt } from '../Disasters.jsx';
 import { forest, hospital, house, lake, office, park, store, tallBuilding, townHall } from '../Locations.jsx';
+import { Link } from 'react-router-dom';
 
 
 /**
@@ -32,8 +34,11 @@ function MainPage() {
   const [aiResponse, setAiResponse] = useState(''); // AI-generated response
   const [disastersEncountered, setDisastersEncountered] = useState([]); // List of encountered disasters
 
+  let params = useParams()
+
   // Google Maps Interface
   async function CheckBuildingType(buildingType, searchCriteria) {
+    console.log(params.address);
     let searchFormatted = searchCriteria.replace(" ", "%20")
     axios.defaults.headers.get['Content-Type'] ='application/json;charset=utf-8';
     axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
@@ -131,7 +136,10 @@ function MainPage() {
   return (
     <>
       <div>
-        <img src="src\assets\The_Survival_Blueprint_-_Logo-removebg-preview.png" alt="The Survival Blueprint Logo" width="10%" height="10%"/>
+        <img src="src/assets/The_Survival_Blueprint_-_Logo-removebg-preview.png" alt="The Survival Blueprint Logo" width="10%" height="10%"/>
+      </div>
+      <div>
+      <Link to="/">Home</Link>
       </div>
 
       <DisasterPrompt disaster={currentDisaster} />
