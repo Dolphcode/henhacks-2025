@@ -4,6 +4,8 @@ import * as DisasterInfo from './Disasters.jsx';
 import { DisasterPrompt } from './Disasters.jsx';
 import { forest, hospital, house, lake, office, park, store, tallBuilding, townHall } from './Locations.jsx';
 
+import { GoogleMap } from '@react-google-maps/api'
+import axios from 'axios';
 
 /**
  * ResponsePopUp Component: Displays a pop-up message.
@@ -28,6 +30,35 @@ function App() {
   const [currentDisaster, setCurrentDisaster] = useState(DisasterInfo.earthquake); // Current disaster
   const [aiResponse, setAiResponse] = useState(''); // AI-generated response
   const [disastersEncountered, setDisastersEncountered] = useState([]); // List of encountered disasters
+
+  // Google Maps Interface
+  async function CheckBuildingType(buildingType, searchCriteria) {
+    let searchFormatted = searchCriteria.replace(" ", "%20")
+    axios.defaults.headers.get['Content-Type'] ='application/json;charset=utf-8';
+    axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+    const response = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=' + searchFormatted + '&inputtype=textquery&locationbias=circle%3A2000%4047.6918452%2C-122.2226413&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
+    console.log(response);
+    const data = await response.json();
+    console.log("eyo");
+    console.log(data);
+    if (data.status === "OK") {
+        let latitude = data.candidates[0].geometry.location.lat;
+        let longitude = data.candidates[0].geometry.location.lng;
+        console.log('%f, %f', latitude, longitude);
+
+        const nearby = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + '%2C' + longitude + '&radius=8000&type=' + buildingType + '&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
+        console.log(nearby);
+        const nearby_data = await nearby.json();
+        if (nearby_data.status === "OK") {
+          console.log(nearby_data.results.length + " " + buildingType);
+          return nearby_data.results.length
+        }
+    }
+    console.log("Something failed");
+    return 0;
+  }
+
+
 
   /**
    * RandomizeDisaster: Selects a random disaster, ensuring no repeats until all are encountered.
@@ -95,6 +126,7 @@ function App() {
     );
   }
 
+
   return (
     <>
       <div>
@@ -102,6 +134,7 @@ function App() {
       </div>
 
       <DisasterPrompt disaster={currentDisaster} />
+      <button onClick={() => CheckBuildingType("hospital", "1 Whitehouse Ave")}>Test Button</button>
       <div className="options">
         <button onClick={() => checkWin(tallBuilding)}>Tall Building</button>
         <button onClick={() => checkWin(house)}>House</button>
