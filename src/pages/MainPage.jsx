@@ -33,36 +33,40 @@ function MainPage() {
   const [currentDisaster, setCurrentDisaster] = useState(DisasterInfo.earthquake); // Current disaster
   const [aiResponse, setAiResponse] = useState(''); // AI-generated response
   const [disastersEncountered, setDisastersEncountered] = useState([]); // List of encountered disasters
+  const [locationData, setLocationData] = useState("");
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  const [closestHospital, setClosestHospital] = useState("");
+  const [hospitalCount, setHospitalCount] = useState(0);
 
   let params = useParams()
 
   // Google Maps Interface
-  async function CheckBuildingType(buildingType, searchCriteria) {
-    console.log(params.address);
-    let searchFormatted = searchCriteria.replace(" ", "%20")
+
+  async function SetLocation() {
     axios.defaults.headers.get['Content-Type'] ='application/json;charset=utf-8';
     axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-    const response = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=' + searchFormatted + '&inputtype=textquery&locationbias=circle%3A2000%4047.6918452%2C-122.2226413&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
-    console.log(response);
+    const response = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=' + params.address + '&inputtype=textquery&locationbias=circle%3A2000%4047.6918452%2C-122.2226413&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
     const data = await response.json();
-    console.log("eyo");
-    console.log(data);
     if (data.status === "OK") {
-        let latitude = data.candidates[0].geometry.location.lat;
-        let longitude = data.candidates[0].geometry.location.lng;
-        console.log('%f, %f', latitude, longitude);
+      setLocationData(data.candidates[0].name);
+      setLatitude(data.candidates[0].geometry.location.lat);
+      setLongitude(data.candidates[0].geometry.location.lng);
+    }
+    console.log("Location set");
+  }
+  SetLocation();
 
-        const nearby = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + '%2C' + longitude + '&radius=8000&type=' + buildingType + '&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
-        console.log(nearby);
+  async function CheckHospital() {
+        const nearby = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + '%2C' + longitude + '&radius=8000&type=hospital&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
         const nearby_data = await nearby.json();
         if (nearby_data.status === "OK") {
-          console.log(nearby_data.results.length + " " + buildingType);
-          return nearby_data.results.length
+          setHospitalCount(nearby_data.results.length);
+          if (nearby_data.results.length > 0) setClosestHospital(nearby_data.results[0].name);
         }
-    }
-    console.log("Something failed");
-    return 0;
   }
+  CheckHospital();
 
 
 
@@ -136,18 +140,19 @@ function MainPage() {
   return (
     <>
       <div>
-        <img src="src/assets/The_Survival_Blueprint_-_Logo-removebg-preview.png" alt="The Survival Blueprint Logo" width="10%" height="10%"/>
+        <img src="https://lh3.googleusercontent.com/d/1_rQGQmIpn9LBOiwiNHMNRSB8LZ4KbMST" alt="The Survival Blueprint Logo" width="10%" height="10%"/>
       </div>
       <div>
       <Link to="/">Home</Link>
       </div>
 
+      <p>The address identified is: <b>{locationData}</b></p>
+      {hospitalCount > 0 ? (<p>There are {hospitalCount} hospital(s) with the closest one being {closestHospital}</p>) : (<p>There are no hospitals in a 5 mile radius</p>)} 
       <DisasterPrompt disaster={currentDisaster} />
-      <button onClick={() => CheckBuildingType("hospital", "1 Whitehouse Ave")}>Test Button</button>
       <div className="options">
         <button onClick={() => checkWin(tallBuilding)}>Tall Building</button>
         <button onClick={() => checkWin(house)}>House</button>
-        <button onClick={() => checkWin(hospital)}>Hospital</button>
+        {hospitalCount > 0 ? (<button onClick={() => checkWin(hospital)}>Hospital</button>) : ("")}
         <button onClick={() => checkWin(park)}>Park</button>
         <button onClick={() => checkWin(store)}>Store</button>
         <button onClick={() => checkWin(lake)}>Lake</button>
