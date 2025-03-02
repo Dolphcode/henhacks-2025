@@ -33,16 +33,16 @@ function App() {
   console.log("2")
 
   function checkWin(location) {
-    if (currentDisaster.want === 'basement' && location.hasBasement()) {
+    if (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.hasBasement()) {
       setStatus(true);
       setText("You survived!");
-    } else if (currentDisaster.want === 'open space' && location.isOpenArea()) {
+    } else if (currentDisaster.want === DisasterInfo.DisasterWants.OPEN_SPACE && location.isOpenArea()) {
       setStatus(true);
       setText("You survived!");
-    } else if (currentDisaster.want === 'high ground' && location.isHighGround()) {
+    } else if (currentDisaster.want === DisasterInfo.DisasterWants.HIGH_GROUND && location.isHighGround()) {
       setStatus(true);
       setText("You survived!");
-    } else if (currentDisaster.want === 'low ground' && location.isLowGround()) {
+    } else if (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.isLowGround()) {
       setStatus(true);
       setText("You survived!");
     } else {
