@@ -60,7 +60,7 @@ function App() {
   async function generateAIResponse(a) {
     const apiKey = 'AIzaSyBeuxA68t_OwWLiStg2jDOiJ2-Bqmozc-I'; // Replace with your API key
     const modelName = 'gemini-2.0-flash';
-    const prompt = `the user thought that ${a} Explain how to survive a ${currentDisaster.name} in two sentences as well`;
+    const prompt = `I thought that ${a} Explain how to survive a ${currentDisaster.name} in two sentences as well`;
 
     try {
       const { GoogleGenerativeAI } = await import('@google/generative-ai');
@@ -89,9 +89,9 @@ function App() {
 
     setStatus(true);
     generateAIResponse(
-      `They thought that ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()} was a good idea. give one sentence why they were ${
+      `staying in a ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()}. give one sentence why I was ${
         isWin ? 'correct' : 'wrong'
-      }. If they chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response.`
+      }. If I chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response.`
     );
   }
 
