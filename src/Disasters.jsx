@@ -17,7 +17,7 @@ function SelectRandomDisaster() {
 
 function DisasterPrompt( { disaster } ) {
     return (
-        <p>{disaster.name} is happening. What do you do?</p>
+        <p>A {disaster.name} is happening. What do you do?</p>
     )
 }
 
