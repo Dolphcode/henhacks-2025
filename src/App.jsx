@@ -23,9 +23,29 @@ function App() {
   const [ text, setText ] = useState("");
   const [ currentDisaster, setCurrentDisaster ] = useState(DisasterInfo.earthquake);
 
+  // A list of disasters that have been recently encountered
+  // This list will clear once all disasters have been encountered
+  const [ disastersEncountered, setDisastersEncountered ] = useState([])
+
   
   function RandomizeDisaster() {
-    setCurrentDisaster(DisasterInfo.SelectRandomDisaster());
+    let currDisaster = DisasterInfo.SelectRandomDisaster();
+    let tempDisastersEncountered = disastersEncountered;
+    while (disastersEncountered.includes(currDisaster)) {
+      currDisaster = DisasterInfo.SelectRandomDisaster();
+    }
+    setCurrentDisaster(currDisaster);
+    
+    // Set Disasters Encountered is the only way to modify this variable, so we re set it to an array
+    // with the new item
+    setDisastersEncountered([...disastersEncountered, currDisaster])
+    tempDisastersEncountered.push(currDisaster);
+    console.log(disastersEncountered);
+
+    if (tempDisastersEncountered.length == DisasterInfo.disaster_count) {
+      setDisastersEncountered([]);
+    }
+
     setStatus(false);
     setText("");
   }

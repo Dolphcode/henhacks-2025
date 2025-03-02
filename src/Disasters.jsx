@@ -11,6 +11,7 @@ class Disaster{
     }
 }
 
+const disaster_count = 4;
 const earthquake = new Disaster('earthquake', DisasterWants.BASEMENT);
 const fire = new Disaster('fire', DisasterWants.OPEN_SPACE);
 const tornado = new Disaster('tornado', DisasterWants.BASEMENT);
@@ -27,4 +28,4 @@ function DisasterPrompt( { disaster } ) {
     )
 }
 
-export {earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster, Disaster, DisasterWants};
+export {disaster_count, earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster, Disaster, DisasterWants};
