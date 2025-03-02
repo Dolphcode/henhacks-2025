@@ -125,6 +125,7 @@ CheckOffice();
    * @param {string} a - Additional information to include in the prompt.
    */
   async function generateAIResponse(isWin, a) {
+    setAiResponse("Thinking...");
     const apiKey = 'AIzaSyBeuxA68t_OwWLiStg2jDOiJ2-Bqmozc-I'; // Replace with your API key
     const modelName = 'gemini-2.0-flash';
     const prompt = `the user thought that ${a} Explain how to survive a ${currentDisaster.name} in two sentences as well`;
