@@ -112,13 +112,15 @@ function App() {
           <ResponsePopUp show={status} text={text} />
         </div>
       </div>
-      <div>
-        <p>
-          <b>Generic Team Name</b>
-        </p>
-        <p>SafeHaven | HenHacks 2025</p>
-      </div>
+      
       {status && <p>{aiResponse}</p>}
+      <div>
+        <p>---</p>
+        <p>
+          <b>The Bunker Buddies</b>
+        </p>
+        <p>Survival Blueprint | HenHacks 2025</p>
+      </div>
     </>
   );
 }
