@@ -26,6 +26,8 @@ function App() {
   
   function RandomizeDisaster() {
     setCurrentDisaster(DisasterInfo.SelectRandomDisaster());
+    setStatus(false);
+    setText("");
   }
   
 
@@ -39,9 +41,6 @@ function App() {
     } else if (currentDisaster.want === DisasterInfo.DisasterWants.HIGH_GROUND && location.isHighGround()) {
       setStatus(true);
       setText("You survived!\n High ground is a good place to be during a " + currentDisaster.name);
-    } else if (currentDisaster.want === DisasterInfo.DisasterWants.BASEMENT && location.isLowGround()) {
-      setStatus(true);
-      setText("You survived!\n A building with a basement is a good place to be during a " + currentDisaster.name);
     } else {
       setStatus(true);
       setText("You died!");
