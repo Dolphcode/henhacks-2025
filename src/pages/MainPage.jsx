@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom';
 
+import '../App.css';
+import { GoogleMap } from '@react-google-maps/api'
+import axios from 'axios';
 import { useState } from 'react';
 import * as DisasterInfo from '../Disasters.jsx';
 import { DisasterPrompt } from '../Disasters.jsx';
@@ -29,6 +31,35 @@ function MainPage() {
   const [currentDisaster, setCurrentDisaster] = useState(DisasterInfo.earthquake); // Current disaster
   const [aiResponse, setAiResponse] = useState(''); // AI-generated response
   const [disastersEncountered, setDisastersEncountered] = useState([]); // List of encountered disasters
+
+  // Google Maps Interface
+  async function CheckBuildingType(buildingType, searchCriteria) {
+    let searchFormatted = searchCriteria.replace(" ", "%20")
+    axios.defaults.headers.get['Content-Type'] ='application/json;charset=utf-8';
+    axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
+    const response = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=' + searchFormatted + '&inputtype=textquery&locationbias=circle%3A2000%4047.6918452%2C-122.2226413&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
+    console.log(response);
+    const data = await response.json();
+    console.log("eyo");
+    console.log(data);
+    if (data.status === "OK") {
+        let latitude = data.candidates[0].geometry.location.lat;
+        let longitude = data.candidates[0].geometry.location.lng;
+        console.log('%f, %f', latitude, longitude);
+
+        const nearby = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + '%2C' + longitude + '&radius=8000&type=' + buildingType + '&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
+        console.log(nearby);
+        const nearby_data = await nearby.json();
+        if (nearby_data.status === "OK") {
+          console.log(nearby_data.results.length + " " + buildingType);
+          return nearby_data.results.length
+        }
+    }
+    console.log("Something failed");
+    return 0;
+  }
+
+
 
   /**
    * RandomizeDisaster: Selects a random disaster, ensuring no repeats until all are encountered.
@@ -61,7 +92,7 @@ function MainPage() {
   async function generateAIResponse(a) {
     const apiKey = 'AIzaSyBeuxA68t_OwWLiStg2jDOiJ2-Bqmozc-I'; // Replace with your API key
     const modelName = 'gemini-2.0-flash';
-    const prompt = `I thought that ${a} Explain how to survive a ${currentDisaster.name} in two sentences as well`;
+    const prompt = `the user thought that ${a} Explain how to survive a ${currentDisaster.name} in two sentences as well`;
 
     try {
       const { GoogleGenerativeAI } = await import('@google/generative-ai');
@@ -90,24 +121,21 @@ function MainPage() {
 
     setStatus(true);
     generateAIResponse(
-      `staying in a ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()}. give one sentence why I was ${
+      `They thought that ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()} was a good idea. give one sentence why they were ${
         isWin ? 'correct' : 'wrong'
-      }. If I chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response.`
+      }. If they chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response.`
     );
   }
 
+
   return (
     <>
-    <div>
-        <Link to="/">Home</Link>
-        <Link to="/game">Game</Link>
-      </div>
-
       <div>
         <img src="src\assets\The_Survival_Blueprint_-_Logo-removebg-preview.png" alt="The Survival Blueprint Logo" width="10%" height="10%"/>
       </div>
 
       <DisasterPrompt disaster={currentDisaster} />
+      <button onClick={() => CheckBuildingType("hospital", "1 Whitehouse Ave")}>Test Button</button>
       <div className="options">
         <button onClick={() => checkWin(tallBuilding)}>Tall Building</button>
         <button onClick={() => checkWin(house)}>House</button>
