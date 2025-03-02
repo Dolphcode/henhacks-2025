@@ -5,10 +5,10 @@ class Disaster{
     }
 }
 
-const earthquake = new Disaster('earthquake', 'basement');
-const fire = new Disaster('fire', 'open space');
-const tornado = new Disaster('tornado', 'basement');
-const flood = new Disaster('flood', 'high ground');
+const earthquake = new Disaster('Earthquake', 'basement');
+const fire = new Disaster('Fire', 'open space');
+const tornado = new Disaster('Tornado', 'basement');
+const flood = new Disaster('Flood', 'high ground');
 
 function SelectRandomDisaster() {
     var disasters = [earthquake, fire, tornado, flood];
@@ -21,4 +21,4 @@ function DisasterPrompt( { disaster } ) {
     )
 }
 
-export {earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster};
+export {earthquake, fire, tornado, flood, DisasterPrompt, SelectRandomDisaster, Disaster};

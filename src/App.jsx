@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import * as DisasterInfo from './Disasters.jsx'
 import { DisasterPrompt } from './Disasters.jsx'
+import { Disaster } from './Disasters.jsx'
+import { house } from './Locations.jsx'
 
-function eqalert() {
-  alert('An earthquake');
-}
 
 function ResponsePopUp({show, text}) {
   if (show) {
@@ -23,39 +20,47 @@ function ResponsePopUp({show, text}) {
 function App() {
   const [ status, setStatus ] = useState(false);
   const [ text, setText ] = useState("");
-  const [count, setCount] = useState(0);
   const [ currentDisaster, setCurrentDisaster ] = useState(DisasterInfo.earthquake);
 
   function RandomizeDisaster() {
-    setCurrentDisaster(DisasterInfo.SelectRandomDisaster())
+    setCurrentDisaster(DisasterInfo.SelectRandomDisaster());
   }
 
-  function OnEarthquake() {
-    setStatus(true);
-    setText("An earthquake occurred");
+
+  function checkWin(location) {
+    if (currentDisaster.want === 'basement' && location.hasBasement()) {
+      setStatus(true);
+      setText("You survived!");
+    } else if (currentDisaster.want === 'open space' && location.isOpenArea()) {
+      setStatus(true);
+      setText("You survived!");
+    } else if (currentDisaster.want === 'high ground' && location.isHighGround()) {
+      setStatus(true);
+      setText("You survived!");
+    } else if (currentDisaster.want === 'low ground' && location.isLowGround()) {
+      setStatus(true);
+      setText("You survived!");
+    } else {
+      setStatus(true);
+      setText("You died!");
+    }
   }
 
-  function Reset() {
-    setStatus(false);
-    setText("");
-  }
+  
   console.log("test");
   return (
     <>
-      
       <DisasterPrompt 
-        disaster={currentDisaster}
+        disaster ={currentDisaster}
       />
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={OnEarthquake}>
-          Earthquake
-        </button>
-        <button onClick={Reset}>
-          Reset
-        </button>
+        <button onClick={checkWin(house)}>
+          House
+        </button> 
+        </div>
+
+
+      <div className="card">
         <button onClick={RandomizeDisaster}>
           Randomize Disaster
         </button>
@@ -65,9 +70,6 @@ function App() {
             text={text}
           />
         </div>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
     </>
   )
