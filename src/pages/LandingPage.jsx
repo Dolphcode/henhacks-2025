@@ -8,7 +8,6 @@ function LandingPage()
 
  function OnEnter() {
   if (address === "") return;
-  console.log("yo");
   navigate("/game/" + address.replace(" ", "%20"));
  }
 

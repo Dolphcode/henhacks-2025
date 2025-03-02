@@ -40,6 +40,12 @@ function MainPage() {
   const [closestHospital, setClosestHospital] = useState("");
   const [hospitalCount, setHospitalCount] = useState(0);
 
+  const [closestPark, setClosestPark] = useState("");
+  const [parkCount, setParkCount] = useState(0);
+
+  const [closestOffice, setClosestOffice] = useState("");
+  const [officeCount, setOfficeCount] = useState(0);
+
   let params = useParams()
 
   // Google Maps Interface
@@ -68,7 +74,25 @@ function MainPage() {
   }
   CheckHospital();
 
+  async function CheckPark() {
+    const nearby = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + '%2C' + longitude + '&radius=8000&type=park&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
+    const nearby_data = await nearby.json();
+    if (nearby_data.status === "OK") {
+      setParkCount(nearby_data.results.length);
+      if (nearby_data.results.length > 0) setClosestPark(nearby_data.results[0].name);
+    }
+}
+CheckPark();
 
+async function CheckOffice() {
+  const nearby = await fetch('https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + '%2C' + longitude + '&radius=8000&type=office&key=AIzaSyCdAWSnRqLcd1wFUtdKuNkfgxA3cIYIQvQ')
+  const nearby_data = await nearby.json();
+  if (nearby_data.status === "OK") {
+    setOfficeCount(nearby_data.results.length);
+    if (nearby_data.results.length > 0) setClosestOffice(nearby_data.results[0].name);
+  }
+}
+CheckOffice();
 
   /**
    * RandomizeDisaster: Selects a random disaster, ensuring no repeats until all are encountered.
@@ -98,7 +122,7 @@ function MainPage() {
    * generateAIResponse: Generates an AI response based on the prompt and user input.
    * @param {string} a - Additional information to include in the prompt.
    */
-  async function generateAIResponse(a) {
+  async function generateAIResponse(isWin, a) {
     const apiKey = 'AIzaSyBeuxA68t_OwWLiStg2jDOiJ2-Bqmozc-I'; // Replace with your API key
     const modelName = 'gemini-2.0-flash';
     const prompt = `the user thought that ${a} Explain how to survive a ${currentDisaster.name} in two sentences as well`;
@@ -109,10 +133,12 @@ function MainPage() {
       const model = genAI.getGenerativeModel({ model: modelName });
       const result = await model.generateContent(prompt);
       setAiResponse(result.response.text());
+      alert((isWin ? "Correct!" : "Not quite!") + "\n\n" + result.response.text());
     } catch (error) {
       console.error('Error generating AI response:', error);
       setAiResponse('Error getting response from AI');
     }
+
   }
 
   /**
@@ -129,10 +155,16 @@ function MainPage() {
       (currentDisaster.want === DisasterInfo.DisasterWants.ALONE && location.isSoliditary());
 
     setStatus(true);
-    generateAIResponse(
+    generateAIResponse(isWin, 
       `They thought that ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()} was a good idea. give one sentence why they were ${
         isWin ? 'correct' : 'wrong'
-      }. If they chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response.`
+      }. If they chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response. If
+      they chose hospital and they were correct, mention that the closest hospital to them is ${closestHospital} and that there are ${hospitalCount} hospital(s) within
+      a 5 mile radius of them, but only do this after telling them that the hospital choice was correct and after explaining why.
+      If they chose park and they were correct, mention that the closest park to them is ${closestPark} and that there are ${parkCount} park(s) within
+      a 5 mile radius of them, but only do this after telling them that the park choice was correct and after explaining why.
+      If they chose office and they were correct, mention that the closest office to them is ${closestOffice} and that there are ${officeCount} offices(s) within
+      a 5 mile radius of them, but only do this after telling them that the office choice was correct and after explaining why.`
     );
   }
 
@@ -147,17 +179,16 @@ function MainPage() {
       </div>
 
       <p>The address identified is: <b>{locationData}</b></p>
-      {hospitalCount > 0 ? (<p>There are {hospitalCount} hospital(s) with the closest one being {closestHospital}</p>) : (<p>There are no hospitals in a 5 mile radius</p>)} 
       <DisasterPrompt disaster={currentDisaster} />
       <div className="options">
         <button onClick={() => checkWin(tallBuilding)}>Tall Building</button>
         <button onClick={() => checkWin(house)}>House</button>
         {hospitalCount > 0 ? (<button onClick={() => checkWin(hospital)}>Hospital</button>) : ("")}
-        <button onClick={() => checkWin(park)}>Park</button>
+        {parkCount > 0 ? (<button onClick={() => checkWin(park)}>Park</button>) : ("")}
         <button onClick={() => checkWin(store)}>Store</button>
         <button onClick={() => checkWin(lake)}>Lake</button>
         <button onClick={() => checkWin(forest)}>Forest</button>
-        <button onClick={() => checkWin(office)}>Office</button>
+        {officeCount > 0 ? (<button onClick={() => checkWin(office)}>Office</button>) : ("")}
         <button onClick={() => checkWin(townHall)}>Town Hall</button>
       </div>
       <div className="card">
