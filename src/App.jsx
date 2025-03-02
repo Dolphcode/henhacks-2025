@@ -122,9 +122,9 @@ function App() {
       <div>
         <p>---</p>
         <p>
-          <b>Survival Blueprint</b>
+          <b>The Survival Blueprint</b>
         </p>
-        <p>The Bunker Buddies | HenHacks 2025</p>
+        <p>Bunker Buddies | HenHacks 2025</p>
       </div>
     </>
   );
