@@ -98,6 +98,8 @@ CheckOffice();
    * RandomizeDisaster: Selects a random disaster, ensuring no repeats until all are encountered.
    */
   function RandomizeDisaster() {
+    setAiResponse("Thinking...");
+
     let currDisaster = DisasterInfo.SelectRandomDisaster();
 
     // Ensure no repeat disasters until all are encountered
@@ -156,7 +158,7 @@ CheckOffice();
 
     setStatus(true);
     generateAIResponse(isWin, 
-      `They thought that ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()} was a good idea. give one sentence why they were ${
+      `They thought that ${location.getBuilding()} was a good idea during a ${currentDisaster.getName()}. give one sentence why they were ${
         isWin ? 'correct' : 'wrong'
       }. If they chose house, assume that it has a sturdy basement and good air filtration system, but do not make a comment about it in your response. If
       they chose hospital and they were correct, mention that the closest hospital to them is ${closestHospital} and that there are ${hospitalCount} hospital(s) within
