@@ -4,8 +4,10 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import * as DisasterInfo from './Disasters.jsx'
 import { DisasterPrompt } from './Disasters.jsx'
+import * as LocationInfo from './Location.jsx'
 
 function eqalert() {
+  LocationInfo.tallBuilding;
   alert('An earthquake');
 }
 
