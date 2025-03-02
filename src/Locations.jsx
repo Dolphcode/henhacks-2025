@@ -29,7 +29,7 @@ class Location {
   const park = new Location(false, false, false, true);
   const store = new Location(false, false, true, false);
   const lake = new Location(false, true, false, true);
-  const forest = new Location(false, false, false, true);
+  const forest = new Location(false, false, false, false);
   const office = new Location(true, false, true, false);
   const townHall = new Location(true, false, true, false);
   

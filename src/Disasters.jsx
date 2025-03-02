@@ -1,7 +1,7 @@
 const DisasterWants = Object.freeze({
     BASEMENT: 0,
     OPEN_SPACE: 1,
-    HIGH_GROUND: 1
+    HIGH_GROUND: 2
 })
 
 class Disaster{
