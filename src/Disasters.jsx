@@ -1,3 +1,9 @@
+const DisasterWants = Object.freeze({
+    BASEMENT: 0,
+    OPEN_SPACE: 1,
+    HIGH_GROUND: 1
+})
+
 class Disaster{
     constructor(name, want){
         this.name = name;
@@ -5,10 +11,10 @@ class Disaster{
     }
 }
 
-const earthquake = new Disaster('earthquake', 'basement');
-const fire = new Disaster('fire', 'open space');
-const tornado = new Disaster('tornado', 'basement');
-const flood = new Disaster('flood', 'high ground');
+const earthquake = new Disaster('earthquake', DisasterWants.BASEMENT);
+const fire = new Disaster('fire', DisasterWants.OPEN_SPACE);
+const tornado = new Disaster('tornado', DisasterWants.BASEMENT);
+const flood = new Disaster('flood', DisasterWants.HIGH_GROUND);
 
 function SelectRandomDisaster() {
     var disasters = [earthquake, fire, tornado, flood];
