@@ -17,7 +17,10 @@ function LandingPage()
  }
     return (
         <div>
-        <h2>The Survival Blueprint</h2>
+        <h1>The Survival Blueprint</h1>
+        <h3>Click <a href="https://cors-anywhere.herokuapp.com/">this link</a></h3>
+        
+        <h3>then press the "Request temporary access to the demo server" button. This must be done in order for this app to work</h3>
         <h3>Enter an address</h3>
         <form>
           <input type="text" name="Address" onChange={OnAddressEnter}></input>
